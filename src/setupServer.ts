@@ -47,7 +47,14 @@ export class ChattyServer {
 
     public routesMiddleware(app: Application): void {};
     public globalErrorHandler(app: Application): void {};
-    public startServer(app: Application): void {};
+    public startServer(app: Application): void {
+        try {
+            const httpServer: http.Server = new http.Server(app);
+            this.startHttpServer(httpServer);
+        } catch(error) {
+            console.log(error);
+        }
+    };
     public createSocketID(httpServer: http.Server): void {};
     public startHttpServer(app: http.Server): void {
         app.listen(SERVER_PORT, () => {
