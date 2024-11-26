@@ -10,11 +10,15 @@ export class ChattyServer {
 
     public start(): void {
         this.securityMiddleware(this.app);
+        this.standardMiddleware(this.app);
+        this.routesMiddleware(this.app);
+        this.globalErrorHandler(this.app);
+        this.startServer(this.app);
     };
 
     public securityMiddleware(app: Application): void {};
     public standardMiddleware(app: Application): void {};
-    public routeMiddleware(app: Application): void {};
+    public routesMiddleware(app: Application): void {};
     public globalErrorHandler(app: Application): void {};
     public startServer(app: Application): void {};
     public createSocketID(httpServer: http.Server): void {};
