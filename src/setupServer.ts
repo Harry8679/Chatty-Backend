@@ -21,7 +21,13 @@ export class ChattyServer {
         this.startServer(this.app);
     };
 
-    public securityMiddleware(app: Application): void {};
+    public securityMiddleware(app: Application): void {
+        app.use(cookieSession({
+            name: 'session',
+            keys: ['test1', 'test2'],
+            maxAge: 24 * 7 * 60 * 60 * 1000
+        }))
+    };
     public standardMiddleware(app: Application): void {};
     public routesMiddleware(app: Application): void {};
     public globalErrorHandler(app: Application): void {};
