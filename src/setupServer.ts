@@ -1,10 +1,11 @@
-import { Application } from 'express';
+import { Application, json, urlencoded } from 'express';
 import http from 'http';
 import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
+import compression from 'compression';
 
 export class ChattyServer {
     private app: Application;
@@ -36,7 +37,12 @@ export class ChattyServer {
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
         }));
     };
-    public standardMiddleware(app: Application): void {};
+    public standardMiddleware(app: Application): void {
+        app.use(compression());
+        app.use(json({ limit: '50mb' }));
+        app.use(urlencoded({ extended: true, limit: '50mb' }));
+    };
+
     public routesMiddleware(app: Application): void {};
     public globalErrorHandler(app: Application): void {};
     public startServer(app: Application): void {};
