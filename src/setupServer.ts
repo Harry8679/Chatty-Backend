@@ -7,6 +7,8 @@ import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import compression from 'compression';
 
+const SERVER_PORT = 5000;
+
 export class ChattyServer {
     private app: Application;
 
@@ -47,5 +49,9 @@ export class ChattyServer {
     public globalErrorHandler(app: Application): void {};
     public startServer(app: Application): void {};
     public createSocketID(httpServer: http.Server): void {};
-    public startHttpServer(app: http.Server): void {};
+    public startHttpServer(app: http.Server): void {
+        app.listen(SERVER_PORT, () => {
+            console.log(`Server is running on the port ${SERVER_PORT}`);
+        })
+    };
 }
