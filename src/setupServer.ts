@@ -29,6 +29,12 @@ export class ChattyServer {
         }));
         app.use(hpp());
         app.use(helmet());
+        app.use(cors({
+            origin: '*',
+            credentials: true,
+            optionsSuccessStatus: 200,
+            methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+        }));
     };
     public standardMiddleware(app: Application): void {};
     public routesMiddleware(app: Application): void {};
