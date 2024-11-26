@@ -26,7 +26,8 @@ export class ChattyServer {
             name: 'session',
             keys: ['test1', 'test2'],
             maxAge: 24 * 7 * 60 * 60 * 1000
-        }))
+        }));
+        app.use(hpp());
     };
     public standardMiddleware(app: Application): void {};
     public routesMiddleware(app: Application): void {};
