@@ -28,6 +28,7 @@ export class ChattyServer {
             maxAge: 24 * 7 * 60 * 60 * 1000
         }));
         app.use(hpp());
+        app.use(helmet());
     };
     public standardMiddleware(app: Application): void {};
     public routesMiddleware(app: Application): void {};
