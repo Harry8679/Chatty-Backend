@@ -7,7 +7,7 @@ import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import compression from 'compression';
 
-const SERVER_PORT = 5000;
+const SERVER_PORT = 5050;
 
 export class ChattyServer {
     private app: Application;
