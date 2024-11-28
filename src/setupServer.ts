@@ -53,16 +53,18 @@ export class ChattyServer {
 
     public routesMiddleware(app: Application): void {};
     public globalErrorHandler(app: Application): void {};
-    public startServer(app: Application): void {
+    public async startServer(app: Application): Promise<void> {
         try {
             const httpServer: http.Server = new http.Server(app);
+            const socketIO: Server = await this.createSocketIO(httpServer);
             this.startHttpServer(httpServer);
+            this.socketIOConnections(socketIO);
         } catch(error) {
             console.log(error);
         }
     };
 
-    private async createSocketIO(httpServer: http.Server): void {
+    private async createSocketIO(httpServer: http.Server): Promise<Server> {
         const io: Server = new Server(httpServer, {
             cors: {
                 origin: config.CLIENT_URL,
@@ -76,10 +78,13 @@ export class ChattyServer {
         return io;
     };
 
-    public createSocketID(httpServer: http.Server): void {};
+    // public createSocketID(httpServer: http.Server): void {};
     public startHttpServer(app: http.Server): void {
+        console.log(`Server has started with process ${process.pid}`);
         app.listen(SERVER_PORT, () => {
             console.log(`Server is running on the port ${SERVER_PORT}`);
         })
     };
+
+    private socketIOConnections(io: Server): void {};
 }
