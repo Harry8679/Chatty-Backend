@@ -78,7 +78,6 @@ export class ChattyServer {
         return io;
     };
 
-    // public createSocketID(httpServer: http.Server): void {};
     public startHttpServer(app: http.Server): void {
         console.log(`Server has started with process ${process.pid}`);
         app.listen(SERVER_PORT, () => {
