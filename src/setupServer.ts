@@ -66,20 +66,6 @@ export class ChattyServer {
         }
     };
 
-    // private async createSocketIO(httpServer: http.Server): Promise<Server> {
-    //     const io: Server = new Server(httpServer, {
-    //         cors: {
-    //             origin: config.CLIENT_URL,
-    //             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
-    //         }
-    //     });
-    //     const pubClient = createClient({ url: config.REDIS_HOST });
-    //     const subClient = pubClient.duplicate();
-    //     await Promise.all([pubClient.connect(), subClient.connect()]);
-    //     io.adapter(createAdapter(pubClient, subClient));
-    //     return io;
-    // };
-
     private async createSocketIO(httpServer: http.Server): Promise<Server> {
         console.log(`Connecting to Redis using URL: ${config.REDIS_HOST}`);
     
