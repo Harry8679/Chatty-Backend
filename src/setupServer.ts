@@ -6,6 +6,7 @@ import hpp from 'hpp';
 import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import compression from 'compression';
+import { config } from './config';
 
 const SERVER_PORT = 5050;
 
@@ -27,13 +28,15 @@ export class ChattyServer {
     public securityMiddleware(app: Application): void {
         app.use(cookieSession({
             name: 'session',
-            keys: ['test1', 'test2'],
-            maxAge: 24 * 7 * 60 * 60 * 1000
+            keys: [config.SECRET_KEY_ONE!, config.SECRET_KEY_TWO!],
+            maxAge: 24 * 7 * 60 * 60 * 1000,
+            secure: config.NODE_ENV !== 'development'
         }));
         app.use(hpp());
         app.use(helmet());
         app.use(cors({
-            origin: '*',
+            // origin: '*',
+            origin: config.CLIENT_URL,
             credentials: true,
             optionsSuccessStatus: 200,
             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
