@@ -56,7 +56,9 @@ export class ChattyServer {
     public async startServer(app: Application): Promise<void> {
         try {
             const httpServer: http.Server = new http.Server(app);
+            // const socketIO: Server = await this.createSocketIO(httpServer);
             const socketIO: Server = await this.createSocketIO(httpServer);
+
             this.startHttpServer(httpServer);
             this.socketIOConnections(socketIO);
         } catch(error) {
@@ -64,19 +66,42 @@ export class ChattyServer {
         }
     };
 
+    // private async createSocketIO(httpServer: http.Server): Promise<Server> {
+    //     const io: Server = new Server(httpServer, {
+    //         cors: {
+    //             origin: config.CLIENT_URL,
+    //             methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+    //         }
+    //     });
+    //     const pubClient = createClient({ url: config.REDIS_HOST });
+    //     const subClient = pubClient.duplicate();
+    //     await Promise.all([pubClient.connect(), subClient.connect()]);
+    //     io.adapter(createAdapter(pubClient, subClient));
+    //     return io;
+    // };
+
     private async createSocketIO(httpServer: http.Server): Promise<Server> {
+        console.log(`Connecting to Redis using URL: ${config.REDIS_HOST}`);
+    
         const io: Server = new Server(httpServer, {
             cors: {
                 origin: config.CLIENT_URL,
                 methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
             }
         });
-        const pubClient = createClient({ url: config.REDIS_HOST });
-        const subClient = pubClient.duplicate();
-        await Promise.all([pubClient.connect(), subClient.connect()]);
-        io.adapter(createAdapter(pubClient, subClient));
-        return io;
-    };
+    
+        try {
+            const pubClient = createClient({ url: config.REDIS_HOST });
+            const subClient = pubClient.duplicate();
+            await Promise.all([pubClient.connect(), subClient.connect()]);
+            io.adapter(createAdapter(pubClient, subClient));
+            return io;
+        } catch (error) {
+            console.error('Failed to connect to Redis:', error);
+            throw error;
+        }
+    }
+    
 
     public startHttpServer(app: http.Server): void {
         console.log(`Server has started with process ${process.pid}`);
