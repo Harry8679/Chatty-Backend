@@ -7,6 +7,9 @@ import cookieSession from 'cookie-session';
 import HTTP_STATUS from 'http-status-codes';
 import compression from 'compression';
 import { config } from './config';
+import { Server } from 'socket.io';
+import { createClient } from 'redis';
+import { createAdapter } from '@socket.io/redis-adapter';
 
 const SERVER_PORT = 5050;
 
@@ -58,6 +61,16 @@ export class ChattyServer {
             console.log(error);
         }
     };
+
+    private createSocketIO(httpServer: http.Server): void {
+        const io: Server = new Server(httpServer, {
+            cors: {
+                origin: config.CLIENT_URL,
+                methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+            }
+        });
+    };
+
     public createSocketID(httpServer: http.Server): void {};
     public startHttpServer(app: http.Server): void {
         app.listen(SERVER_PORT, () => {
